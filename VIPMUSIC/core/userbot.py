@@ -97,7 +97,7 @@ class Userbot(Client):
                 await self.two.join_chat("royalgroupop")
                 await self.two.join_chat("itsRareBeautySelenaGomez")
                 await self.two.join_chat("itsRareBeautySelenaGomez")
-                await self.two.join_chat(royalgroupop")
+                await self.two.join_chat("royalgroupop")
             except:
                 pass
             assistants.append(2)
