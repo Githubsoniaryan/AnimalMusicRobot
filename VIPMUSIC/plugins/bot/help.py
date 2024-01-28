@@ -52,7 +52,7 @@ from VIPMUSIC.utils.inline import help_pannel, private_panel, start_panel
 from config import BANNED_USERS
 from strings import get_string
 
-START_MESSAGE = "━━━━━━━━━━━━━━━━━━━━━━━━\n**📝𝐅ree  𝐕c  𝐒ong  𝐏layer  𝐁oт❤️**\n\n➻ 24 × 7 𝗥υn + 𝗟ᴀɢ 𝗙ʀᴇᴇ..\n➖➖➖➖➖➖➖➖➖➖\n➻ 𝗧agall 𝗢ɴe 𝗕y 𝗢ɴe...\n➖➖➖➖➖➖➖➖➖➖\n➻ 𝗜nvιтeall 𝗙or 𝗝oιn 𝗩c...\n➖➖➖➖➖➖➖➖➖➖\n➻ 𝗦ʜᴀʏʀɪ 𝗙ᴇᴀᴛᴜʀᴇ...\n➖➖➖➖➖➖➖➖➖➖\n➻ 𝗡o 𝗔ny 𝗔dѕ/𝗣roмo... ✨\n\n**🌺 ᴀᴅᴅ ᴍᴇ & ɢɪᴠᴇ ᴍᴇ ᴀ ᴄʜᴀɴᴄᴇ ᴛᴏ ʜᴀɴᴅʟᴇ ʏᴏᴜʀ ᴍᴜꜱɪᴄ Qᴜᴇʀɪᴇꜱ.**\n\n🏓 𝐎𝐖𝐍𝐄𝐑 ➪ **[𝗔𝗡𝗜𝗠𝗔𝗟](https://t.me/AnimalJanwarrrr) 💞**\n📡 𝐂𝐎-𝐎𝐖𝐍𝐄𝐑 ➪ **[𝗧𝗘𝗗𝗗𝗬](https://t.me/M_only_urs) 💞**\n━━━━━━━━━━━━━━━━━━━━━━━━"
+START_MESSAGE = "━━━━━━━━━━━━━━━━━━━━━━━━\n**📝𝐅ree  𝐕c  𝐒ong  𝐏layer  𝐁oт❤️**\n\n➻ 24 × 7 𝗥υn + 𝗟ᴀɢ 𝗙ʀᴇᴇ..\n➻ 𝗧agall 𝗢ɴe 𝗕y 𝗢ɴe...\n➻ 𝗜nvιтeall 𝗙or 𝗝oιn 𝗩c...\n➻ 𝗦ʜᴀʏʀɪ 𝗙ᴇᴀᴛᴜʀᴇ...\n➻ 𝗡o 𝗔ny 𝗔dѕ/𝗣roмo... ✨\n\n**🌺 ᴀᴅᴅ ᴍᴇ & ɢɪᴠᴇ ᴍᴇ ᴀ ᴄʜᴀɴᴄᴇ ᴛᴏ ʜᴀɴᴅʟᴇ ʏᴏᴜʀ ᴍᴜꜱɪᴄ Qᴜᴇʀɪᴇꜱ.\n━━━━━━━━━━━━━━━━━━━━━━━━"
             
 DOCS_MESSAGE = "**๏ ᴄʟɪᴄᴋ ʙᴇʟᴏᴡ ʙᴜᴛᴛᴏɴ ᴛᴏ ᴏᴘᴇɴ ʜᴇʟᴘ sᴇᴄᴛɪᴏɴ🥀**"
 
