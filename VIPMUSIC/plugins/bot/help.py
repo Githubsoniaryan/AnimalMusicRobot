@@ -52,7 +52,7 @@ from VIPMUSIC.utils.inline import help_pannel, private_panel, start_panel
 from config import BANNED_USERS
 from strings import get_string
 
-START_MESSAGE = "**📝𝐅ree  𝐕c  𝐒ong  𝐏layer  𝐁oт❤️**\n\n➻ 24 × 7 𝗥υn + 𝗟ᴀɢ 𝗙ʀᴇᴇ..\n➖➖➖➖➖➖➖➖➖➖\n➻ 𝗧agall 𝗢ɴe 𝗕y 𝗢ɴe...\n➖➖➖➖➖➖➖➖➖➖\n➻ 𝗜nvιтeall 𝗙or 𝗝oιn 𝗩c...\n➖➖➖➖➖➖➖➖➖➖\n➻ 𝗦ʜᴀʏʀɪ 𝗙ᴇᴀᴛᴜʀᴇ...\n➖➖➖➖➖➖➖➖➖➖\n➻ 𝗡o 𝗔ny 𝗔dѕ/𝗣roмo... ✨\n\n**🌺 ᴀᴅᴅ ᴍᴇ & ɢɪᴠᴇ ᴍᴇ ᴀ ᴄʜᴀɴᴄᴇ ᴛᴏ ʜᴀɴᴅʟᴇ ʏᴏᴜʀ ᴍᴜꜱɪᴄ Qᴜᴇʀɪᴇꜱ.**\n\n🏓 𝐌𝐲 𝐑𝐞𝐩𝐨 ➪ **[ᴄʟɪᴄᴋ ʜᴇʀᴇ](https://github.com/THE-VIP-BOY-OP/VIP-MUSIC) 💞**\n📡 𝐌𝐚𝐝𝐞 𝐁𝐲 ➪ **[ᴠɪᴘ ✯ ʙᴏʏ](https://t.me/the_vip_boy) 💞**"
+START_MESSAGE = "━━━━━━━━━━━━━━━━━━━━━━━━\n**📝𝐅ree  𝐕c  𝐒ong  𝐏layer  𝐁oт❤️**\n\n➻ 24 × 7 𝗥υn + 𝗟ᴀɢ 𝗙ʀᴇᴇ..\n➖➖➖➖➖➖➖➖➖➖\n➻ 𝗧agall 𝗢ɴe 𝗕y 𝗢ɴe...\n➖➖➖➖➖➖➖➖➖➖\n➻ 𝗜nvιтeall 𝗙or 𝗝oιn 𝗩c...\n➖➖➖➖➖➖➖➖➖➖\n➻ 𝗦ʜᴀʏʀɪ 𝗙ᴇᴀᴛᴜʀᴇ...\n➖➖➖➖➖➖➖➖➖➖\n➻ 𝗡o 𝗔ny 𝗔dѕ/𝗣roмo... ✨\n\n**🌺 ᴀᴅᴅ ᴍᴇ & ɢɪᴠᴇ ᴍᴇ ᴀ ᴄʜᴀɴᴄᴇ ᴛᴏ ʜᴀɴᴅʟᴇ ʏᴏᴜʀ ᴍᴜꜱɪᴄ Qᴜᴇʀɪᴇꜱ.**\n\n🏓 𝐎𝐖𝐍𝐄𝐑 ➪ **[𝗔𝗡𝗜𝗠𝗔𝗟](https://t.me/AnimalJanwarrrr) 💞**\n📡 𝐂𝐎-𝐎𝐖𝐍𝐄𝐑 ➪ **[𝗧𝗘𝗗𝗗𝗬](https://t.me/M_only_urs) 💞**\n━━━━━━━━━━━━━━━━━━━━━━━━"
             
 DOCS_MESSAGE = "**๏ ᴄʟɪᴄᴋ ʙᴇʟᴏᴡ ʙᴜᴛᴛᴏɴ ᴛᴏ ᴏᴘᴇɴ ʜᴇʟᴘ sᴇᴄᴛɪᴏɴ🥀**"
 
@@ -81,59 +81,59 @@ def callback_query(client, callback_query):
         PAGE1_BUTTON = [
             [
                 InlineKeyboardButton(
-                    text="🍁αԃɱιɳ🍁",
+                    text="🍁ᴀᴅᴍɪɴ🍁",
                     callback_data="hb1",
                 ),
                 InlineKeyboardButton(
-                    text="🔺αυƭɦ🔺",
+                    text="🔺ᴀᴜᴛʜ🔺",
                     callback_data="hb2",
                 ),
             
                 InlineKeyboardButton(
-                    text="♨️вℓσ¢к♨️",
+                    text="♨️ʙʟᴏᴄᴋ♨️",
                     callback_data="hb3",
                 ),
             ],
             [
                 InlineKeyboardButton(
-                    text="📣ɠ¢αʂƭ📣",
+                    text="📣ɢᴄᴀsᴛ📣",
                     callback_data="hb4",
                 ),
                 InlineKeyboardButton(
-                    text="🚫ɠɓαɳ🚫",
+                    text="🚫ɢʙᴀɴ🚫",
                     callback_data="hb12",
                 ),
                 InlineKeyboardButton(
-                    text="🍷ℓყɾเ¢ʂ🍷",
+                    text="🍷ʟʏʀɪᴄs🍷",
                     callback_data="hb5",
                 ),
             ],
             [
                 InlineKeyboardButton(
-                    text="🎙️քℓαყℓเʂƭ🎙️",
+                    text="🎙️ᴘʟᴀʏʟɪsᴛ🎙️",
                     callback_data="hb6",
                 ),
                 InlineKeyboardButton(
-                    text="🎸ѵσเ¢ε-¢ɦαƭ🎸",
+                    text="🎸ᴠᴏɪᴄᴇ-ᴄʜᴀᴛ🎸",
                     callback_data="hb10",
                 ),
             ],
             [
            
                 InlineKeyboardButton(
-                    text="🕹️ρℓαყ🕹️",
+                    text="🕹️ᴘʟᴀʏ🕹️",
                     callback_data="hb8",
                 ),
             
             
                 InlineKeyboardButton(
-                    text="🍸ʂ𝖚∂σ🍸",
+                    text="🍸sᴜᴅᴏ🍸",
                     callback_data="hb9",
                 ),
             ],
             [
                 InlineKeyboardButton(
-                    text="⚜️SƬΛᏒƬ⚜️",
+                    text="⚜️sᴛᴀʀᴛ⚜️",
                     callback_data="hb11",
                 ),
             ],
@@ -221,7 +221,7 @@ def callback_query(client, callback_query):
             
             
                 InlineKeyboardButton(
-                    text="🍸Iᴍᴀɢᴇ🍸",
+                    text="🍸ɪᴍᴀɢᴇ🍸",
                     callback_data="hb22",
                 ),
             ],
