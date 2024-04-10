@@ -1,508 +1,206 @@
 from typing import Union
+
 from pyrogram import filters, types
 from pyrogram.types import InlineKeyboardMarkup, Message
-from VIPMUSIC import app as bot
-from VIPMUSIC.utils import help_pannel
+
+from VIPMUSIC import app
+from VIPMUSIC.utils import first_page, second_page
 from VIPMUSIC.utils.database import get_lang
 from VIPMUSIC.utils.decorators.language import LanguageStart, languageCB
 from VIPMUSIC.utils.inline.help import help_back_markup, private_help_panel
 from config import BANNED_USERS, START_IMG_URL, SUPPORT_CHAT
 from strings import get_string, helpers
 from VIPMUSIC.misc import SUDOERS
-from typing import Union
-from pyrogram import filters
-from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
-from VIPMUSIC import app as bot
-from strings import get_string
+from time import time
+import asyncio
+from VIPMUSIC.utils.extraction import extract_user
 
-import time
-import random
-from pyrogram import filters
-from pyrogram.enums import ChatType
-from pyrogram.types import InlineKeyboardButton, Message
-from youtubesearchpython.__future__ import VideosSearch
-from typing import Union
-from pyrogram import filters, types
-from pyrogram.types import InlineKeyboardMarkup, Message
-from VIPMUSIC import app as bot
-from VIPMUSIC.utils import help_pannel
-from VIPMUSIC.utils.database import get_lang
-from VIPMUSIC.utils.decorators.language import LanguageStart, languageCB
-from VIPMUSIC.utils.inline.help import help_back_markup, private_help_panel
-from config import BANNED_USERS, START_IMG_URL, SUPPORT_CHAT
-from strings import get_string, helpers
-from VIPMUSIC.misc import SUDOERS
-from pyrogram import filters
-from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
-from strings import get_string
-import config
-from VIPMUSIC.misc import _boot_
-from VIPMUSIC.plugins.sudo.sudoers import sudoers_list
-from VIPMUSIC.utils.database import (
-    add_served_chat,
-    add_served_user,
-    blacklisted_chats,
-    get_lang,
-    is_banned_user,
-    is_on_off,
-)
-from VIPMUSIC.utils.decorators.language import LanguageStart
-from VIPMUSIC.utils.formatters import get_readable_time
-from VIPMUSIC.utils.inline import help_pannel, private_panel, start_panel
-from config import BANNED_USERS
-from strings import get_string
+# Define a dictionary to track the last message timestamp for each user
+user_last_message_time = {}
+user_command_count = {}
+# Define the threshold for command spamming (e.g., 20 commands within 60 seconds)
+SPAM_THRESHOLD = 2
+SPAM_WINDOW_SECONDS = 5
 
-START_MESSAGE = "━━━━━━━━━━━━━━━━━━━━━━━━\n**📝𝐀ll  𝐑ounder  𝐎p  𝐎p  𝐁oт❤️**\n\n➻ 24 × 7 𝗥υn + 𝗟ᴀɢ 𝗙ʀᴇᴇ..\n➻ 𝗧agall 𝗢ɴe 𝗕y 𝗢ɴe...\n➻ 𝗜nvιтeall 𝗙or 𝗝oιn 𝗩c...\n➻ 𝗦ʜᴀʏʀɪ 𝗙ᴇᴀᴛᴜʀᴇ...\n➻ 𝗡o 𝗔ny 𝗔dѕ/𝗣roмo... ✨\n┏━━━━━━━━━━━━━━━━━┓\n┣★𝐎𝐖𝐍𝐄𝐑 ➪ **[𝗔𝗡𝗜𝗠𝗔𝗟](https://t.me/AnimalJanwarrrr)**\n┣★𝐂𝐎-𝐎𝐖𝐍𝐄𝐑 ➪ **[𝗧𝗘𝗗𝗗𝗬](https://t.me/M_only_urs)**\n┗━━━━━━━━━━━━━━━━━┛\n\n**🌺 ᴀᴅᴅ ᴍᴇ & ɢɪᴠᴇ ᴍᴇ ᴀ ᴄʜᴀɴᴄᴇ ᴛᴏ ʜᴀɴᴅʟᴇ ʏᴏᴜʀ ᴍᴜꜱɪᴄ Qᴜᴇʀɪᴇꜱ.\n━━━━━━━━━━━━━━━━━━━━━━━━"
-            
-DOCS_MESSAGE = "**๏ ᴄʟɪᴄᴋ ʙᴇʟᴏᴡ ʙᴜᴛᴛᴏɴ ᴛᴏ ᴏᴘᴇɴ ʜᴇʟᴘ sᴇᴄᴛɪᴏɴ🥀**"
+@app.on_message(filters.command(["help"]) & filters.private & ~BANNED_USERS)
+@app.on_callback_query(filters.regex("settings_back_helper") & ~BANNED_USERS)
+async def helper_private(
+    client: app, update: Union[types.Message, types.CallbackQuery]
+):
 
-DOCS_BUTTONS = [
-    [
-        InlineKeyboardButton('๏ sᴛᴀʀᴛ ๏', callback_data="STARTUP"),
-        InlineKeyboardButton('๏ ʜᴇʟᴘ ๏', callback_data="START READING")]
-]
-
-@bot.on_message(filters.command("help") & ~BANNED_USERS)
-def doc(bot, message):
-    bot.send_photo(
-        chat_id=message.chat.id,
-        photo=START_IMG_URL,
-        caption=DOCS_MESSAGE,
-        reply_markup=InlineKeyboardMarkup(DOCS_BUTTONS)
-    )
+    is_callback = isinstance(update, types.CallbackQuery)
+    if is_callback:
+        try:
+            await update.answer()
+        except:
+            pass
+        chat_id = update.message.chat.id
+        language = await get_lang(chat_id)
+        _ = get_string(language)
+        keyboard = first_page(_)
+        await update.edit_message_text(
+            _["help_1"].format(SUPPORT_CHAT), reply_markup=keyboard
+        )
+    else:
+        try:
+            await update.delete()
+        except:
+            pass
+        language = await get_lang(update.chat.id)
+        _ = get_string(language)
+        keyboard = first_page(_)
+        await update.reply_photo(
+            photo=START_IMG_URL,
+            caption=_["help_1"].format(SUPPORT_CHAT),
+            reply_markup=keyboard,
+        )
 
 
+@app.on_message(filters.command(["help"]) & filters.group & ~BANNED_USERS)
+@LanguageStart
+async def help_com_group(client, message: Message, _):
+    user_id = message.from_user.id
+    current_time = time()
+    # Update the last message timestamp for the user
+    last_message_time = user_last_message_time.get(user_id, 0)
+
+    if current_time - last_message_time < SPAM_WINDOW_SECONDS:
+        # If less than the spam window time has passed since the last message
+        user_last_message_time[user_id] = current_time
+        user_command_count[user_id] = user_command_count.get(user_id, 0) + 1
+        if user_command_count[user_id] > SPAM_THRESHOLD:
+            # Block the user if they exceed the threshold
+            hu = await message.reply_text(f"**{message.from_user.mention} ᴘʟᴇᴀsᴇ ᴅᴏɴᴛ ᴅᴏ sᴘᴀᴍ, ᴀɴᴅ ᴛʀʏ ᴀɢᴀɪɴ ᴀғᴛᴇʀ 5 sᴇᴄ**")
+            await asyncio.sleep(3)
+            await hu.delete()
+            return 
+    else:
+        # If more than the spam window time has passed, reset the command count and update the message timestamp
+        user_command_count[user_id] = 1
+        user_last_message_time[user_id] = current_time
+
+    keyboard = private_help_panel(_)
+    await message.reply_text(_["help_2"], reply_markup=InlineKeyboardMarkup(keyboard))
 
 
-@bot.on_callback_query()
-def callback_query(client, callback_query):
-    if callback_query.data == "START READING":
-        PAGE1_TEXT = "**๏ ᴛʜɪs ɪs ᴍᴜsɪᴄ ʜᴇʟᴘ ๏**"
-        PAGE1_BUTTON = [
-            [
-                InlineKeyboardButton(
-                    text="🍁ᴀᴅᴍɪɴ🍁",
-                    callback_data="hb1",
-                ),
-                InlineKeyboardButton(
-                    text="🔺ᴀᴜᴛʜ🔺",
-                    callback_data="hb2",
-                ),
-            
-                InlineKeyboardButton(
-                    text="♨️ʙʟᴏᴄᴋ♨️",
-                    callback_data="hb3",
-                ),
-            ],
-            [
-                InlineKeyboardButton(
-                    text="📣ɢᴄᴀsᴛ📣",
-                    callback_data="hb4",
-                ),
-                InlineKeyboardButton(
-                    text="🚫ɢʙᴀɴ🚫",
-                    callback_data="hb12",
-                ),
-                InlineKeyboardButton(
-                    text="🍷ʟʏʀɪᴄs🍷",
-                    callback_data="hb5",
-                ),
-            ],
-            [
-                InlineKeyboardButton(
-                    text="🎙️ᴘʟᴀʏʟɪsᴛ🎙️",
-                    callback_data="hb6",
-                ),
-                InlineKeyboardButton(
-                    text="🎸ᴠᴏɪᴄᴇ-ᴄʜᴀᴛ🎸",
-                    callback_data="hb10",
-                ),
-            ],
-            [
-           
-                InlineKeyboardButton(
-                    text="🕹️ᴘʟᴀʏ🕹️",
-                    callback_data="hb8",
-                ),
-            
-            
-                InlineKeyboardButton(
-                    text="🍸sᴜᴅᴏ🍸",
-                    callback_data="hb9",
-                ),
-            ],
-            [
-                InlineKeyboardButton(
-                    text="⚜️sᴛᴀʀᴛ⚜️",
-                    callback_data="hb11",
-                ),
-            ],
-            [
-                InlineKeyboardButton("๏ ᴍᴇɴᴜ ๏", callback_data="GO TO MENU"),
-                InlineKeyboardButton("๏ ɴᴇxᴛ ๏", callback_data="GO TO PAGE 2")
-            ]
-        ]
-        callback_query.edit_message_text(
-            PAGE1_TEXT,
-            reply_markup=InlineKeyboardMarkup(PAGE1_BUTTON)
-        )
-
-    elif callback_query.data == "HELPS":
-        # Handle "HELPS" callback data
-        PAGE1_TEXT = "**๏ ᴛʜɪs ɪs ʏᴏᴜʀ ʜᴇʟᴘ sᴇᴄᴛɪᴏɴ ๏**"
-        PAGE1_BUTTON = [
-            [InlineKeyboardButton("Back", callback_data="GO TO MENU")]
-        ]
-        callback_query.edit_message_text(
-            PAGE1_TEXT,
-            reply_markup=InlineKeyboardMarkup(PAGE1_BUTTON)
-        )
-        
-    elif callback_query.data == "GO TO MENU":
-        callback_query.edit_message_text(
-            DOCS_MESSAGE,
-            reply_markup=InlineKeyboardMarkup(DOCS_BUTTONS)
-        )
-
-    elif callback_query.data == "STARTUP":
-        callback_query.edit_message_text(
-            START_MESSAGE,
-            reply_markup=InlineKeyboardMarkup(buttons)
-        )
-        
-    elif callback_query.data == "GO TO PAGE 2":
-        PAGE2_TEXT = "**๏ ᴛʜɪs ɪs ᴀᴅᴠᴀɴᴄᴇ ʜᴇʟᴘ ๏**"
-        PAGE2_BUTTON = [
-            [
-                InlineKeyboardButton(
-                    text="🍁sᴛᴀᴛs🍁",
-                    callback_data="hb7",
-                ),
-                InlineKeyboardButton(
-                    text="🎸ɪɴғᴏ🎸",
-                    callback_data="hb19",
-                ),
-            
-                InlineKeyboardButton(
-                    text="♨️sᴏɴɢ♨️",
-                    callback_data="hb14",
-                ),
-            ],
-            [
-                InlineKeyboardButton(
-                    text="📣sᴘᴇᴇᴅ📣",
-                    callback_data="hb15",
-                ),
-                InlineKeyboardButton(
-                    text="🚫ᴀᴄᴛɪᴏɴ🚫",
-                    callback_data="hb16",
-                ),
-                InlineKeyboardButton(
-                    text="🍷sᴛɪᴄᴋᴇʀ🍷",
-                    callback_data="hb17",
-                ),
-            ],
-            [
-                InlineKeyboardButton(
-                    text="🎙️sʜᴀʏʀɪ🎙️",
-                    callback_data="hb18",
-                ),
-                InlineKeyboardButton(
-                    text="🔺ᴛᴀɢᴀʟʟ🔺",
-                    callback_data="hb13",
-                ),
-            ],
-            [
-           
-                InlineKeyboardButton(
-                    text="🕹️ɢʀᴏᴜᴘ🕹️",
-                    callback_data="hb20",
-                ),
-            
-            
-                InlineKeyboardButton(
-                    text="🍸ɪᴍᴀɢᴇ🍸",
-                    callback_data="hb22",
-                ),
-            ],
-            [
-                InlineKeyboardButton(
-                    text="⚜️ᴇxᴛʀᴀ⚜️",
-                    callback_data="hb21",
-                ),
-            ],
-            [
-                InlineKeyboardButton("๏ ʙᴀᴄᴋ ๏",
-                    callback_data="START READING"
-                )
-            ]
-        ]
-        callback_query.edit_message_text(
-            PAGE2_TEXT,
-            reply_markup=InlineKeyboardMarkup(PAGE2_BUTTON)
-        )
-        
-    elif callback_query.data == "hb1":
-        PAGE2_BUTTON = [
-            [InlineKeyboardButton("๏ ʙᴀᴄᴋ ๏", callback_data="START READING")]
-        ]
-        callback_query.edit_message_text(
-            helpers.HELP_1,
-            reply_markup=InlineKeyboardMarkup(PAGE2_BUTTON)
-        )
-        
-    elif callback_query.data == "hb2":
-        PAGE2_BUTTON = [
-            [InlineKeyboardButton("๏ ʙᴀᴄᴋ ๏", callback_data="START READING")]
-        ]
-        callback_query.edit_message_text(
-            helpers.HELP_2,
-            reply_markup=InlineKeyboardMarkup(PAGE2_BUTTON)
-        )
-        
-    elif callback_query.data == "hb3":
-        PAGE2_BUTTON = [
-            [InlineKeyboardButton("๏ ʙᴀᴄᴋ ๏", callback_data="START READING")]
-        ]
-        callback_query.edit_message_text(
-            helpers.HELP_3,
-            reply_markup=InlineKeyboardMarkup(PAGE2_BUTTON)
-        )
-        
-    elif callback_query.data == "hb4":
-        PAGE2_BUTTON = [
-            [InlineKeyboardButton("๏ ʙᴀᴄᴋ ๏", callback_data="START READING")]
-        ]
-        callback_query.edit_message_text(
-            helpers.HELP_4,
-            reply_markup=InlineKeyboardMarkup(PAGE2_BUTTON)
-        )
-        
-    elif callback_query.data == "hb5":
-        PAGE2_BUTTON = [
-            [InlineKeyboardButton("๏ ʙᴀᴄᴋ ๏", callback_data="START READING")]
-        ]
-        callback_query.edit_message_text(
-            helpers.HELP_5,
-            reply_markup=InlineKeyboardMarkup(PAGE2_BUTTON)
-        )
-        
-    elif callback_query.data == "hb6":
-        PAGE2_BUTTON = [
-            [InlineKeyboardButton("๏ ʙᴀᴄᴋ ๏", callback_data="START READING")]
-        ]
-        callback_query.edit_message_text(
-            helpers.HELP_6,
-            reply_markup=InlineKeyboardMarkup(PAGE2_BUTTON)
-        )
-        
-    elif callback_query.data == "hb7":
-        PAGE2_BUTTON = [
-            [InlineKeyboardButton("๏ ʙᴀᴄᴋ ๏", callback_data="GO TO PAGE 2")]
-        ]
-        callback_query.edit_message_text(
-            helpers.HELP_7,
-            reply_markup=InlineKeyboardMarkup(PAGE2_BUTTON)
-        )
-        
-    elif callback_query.data == "hb8":
-        PAGE2_BUTTON = [
-            [InlineKeyboardButton("๏ ʙᴀᴄᴋ ๏", callback_data="START READING")]
-        ]
-        callback_query.edit_message_text(
-            helpers.HELP_8,
-            reply_markup=InlineKeyboardMarkup(PAGE2_BUTTON)
-        )
-        
-    elif callback_query.data == "hb9":
-        PAGE2_BUTTON = [
-            [InlineKeyboardButton("๏ ʙᴀᴄᴋ ๏", callback_data="START READING")]
-        ]
-        callback_query.edit_message_text(
-            helpers.HELP_9,
-            reply_markup=InlineKeyboardMarkup(PAGE2_BUTTON)
-        )
-        
-    elif callback_query.data == "hb10":
-        PAGE2_BUTTON = [
-            [InlineKeyboardButton("๏ ʙᴀᴄᴋ ๏", callback_data="START READING")]
-        ]
-        callback_query.edit_message_text(
-            helpers.HELP_10,
-            reply_markup=InlineKeyboardMarkup(PAGE2_BUTTON)
-        )
-        
-    elif callback_query.data == "hb11":
-        PAGE2_BUTTON = [
-            [InlineKeyboardButton("๏ ʙᴀᴄᴋ ๏", callback_data="START READING")]
-        ]
-        callback_query.edit_message_text(
-            helpers.HELP_11,
-            reply_markup=InlineKeyboardMarkup(PAGE2_BUTTON)
-        )
-        
-    elif callback_query.data == "hb12":
-        PAGE2_BUTTON = [
-            [InlineKeyboardButton("๏ ʙᴀᴄᴋ ๏", callback_data="START READING")]
-        ]
-        callback_query.edit_message_text(
-            helpers.HELP_12,
-            reply_markup=InlineKeyboardMarkup(PAGE2_BUTTON)
-        )
-        
-    elif callback_query.data == "hb13":
-        PAGE2_BUTTON = [
-            [InlineKeyboardButton("๏ ʙᴀᴄᴋ ๏", callback_data="GO TO PAGE 2")]
-        ]
-        callback_query.edit_message_text(
-            helpers.HELP_13,
-            reply_markup=InlineKeyboardMarkup(PAGE2_BUTTON)
-        )
-        
-    elif callback_query.data == "hb14":
-        PAGE2_BUTTON = [
-            [InlineKeyboardButton("๏ ʙᴀᴄᴋ ๏", callback_data="GO TO PAGE 2")]
-        ]
-        callback_query.edit_message_text(
-            helpers.HELP_14,
-            reply_markup=InlineKeyboardMarkup(PAGE2_BUTTON)
-        )
-        
-    elif callback_query.data == "hb15":
-        PAGE2_BUTTON = [
-            [InlineKeyboardButton("๏ ʙᴀᴄᴋ ๏", callback_data="GO TO PAGE 2")]
-        ]
-        callback_query.edit_message_text(
-            helpers.HELP_15,
-            reply_markup=InlineKeyboardMarkup(PAGE2_BUTTON)
-        )
-        
-    elif callback_query.data == "hb16":
-        PAGE2_BUTTON = [
-            [InlineKeyboardButton("๏ ʙᴀᴄᴋ ๏", callback_data="GO TO PAGE 2")]
-        ]
-        callback_query.edit_message_text(
-            helpers.HELP_16,
-            reply_markup=InlineKeyboardMarkup(PAGE2_BUTTON)
-        )
-        
-    elif callback_query.data == "hb17":
-        PAGE2_BUTTON = [
-            [InlineKeyboardButton("๏ ʙᴀᴄᴋ ๏", callback_data="GO TO PAGE 2")]
-        ]
-        callback_query.edit_message_text(
-            helpers.HELP_17,
-            reply_markup=InlineKeyboardMarkup(PAGE2_BUTTON)
-        )
-
-    elif callback_query.data == "hb18":
-        PAGE2_BUTTON = [
-            [InlineKeyboardButton("๏ ʙᴀᴄᴋ ๏", callback_data="GO TO PAGE 2")]
-        ]
-        callback_query.edit_message_text(
-            helpers.HELP_18,
-            reply_markup=InlineKeyboardMarkup(PAGE2_BUTTON)
-        )
-        
-    elif callback_query.data == "hb19":
-        PAGE2_BUTTON = [
-            [InlineKeyboardButton("๏ ʙᴀᴄᴋ ๏", callback_data="GO TO PAGE 2")]
-        ]
-        callback_query.edit_message_text(
-            helpers.HELP_19,
-            reply_markup=InlineKeyboardMarkup(PAGE2_BUTTON)
-        )
-        
-    elif callback_query.data == "hb20":
-        PAGE2_BUTTON = [
-            [InlineKeyboardButton("๏ ʙᴀᴄᴋ ๏", callback_data="GO TO PAGE 2")]
-        ]
-        callback_query.edit_message_text(
-            helpers.HELP_20,
-            reply_markup=InlineKeyboardMarkup(PAGE2_BUTTON)
-        )
-        
-    elif callback_query.data == "hb21":
-        PAGE2_BUTTON = [
-            [InlineKeyboardButton("๏ ʙᴀᴄᴋ ๏", callback_data="GO TO PAGE 2")]
-        ]
-        callback_query.edit_message_text(
-            helpers.HELP_21,
-            reply_markup=InlineKeyboardMarkup(PAGE2_BUTTON)
-        )
-    
-    elif callback_query.data == "hb22":
-        PAGE2_BUTTON = [
-            [InlineKeyboardButton("๏ ʙᴀᴄᴋ ๏", callback_data="GO TO PAGE 2")]
-        ]
-        callback_query.edit_message_text(
-            helpers.HELP_22,
-            reply_markup=InlineKeyboardMarkup(PAGE2_BUTTON)
-        )
-        
-
-
-
-
-
-
-#start.py functions
-
-
-
-
-
-YUMI_PICS = [
-"https://telegra.ph/file/3ed81ef4e352a691fb0b4.jpg",
-"https://telegra.ph/file/3134ed3b57eb051b8c363.jpg",
-"https://telegra.ph/file/6ca0813b719b6ade1c250.jpg",
-"https://telegra.ph/file/5a2cbb9deb62ba4b122e4.jpg",
-"https://telegra.ph/file/cb09d52a9555883eb0f61.jpg"
-
-]
-
-buttons = [
-        [
-            InlineKeyboardButton(
-                text="•─╼⃝𖠁𝐀ᴅᴅ ◈ 𝐌ᴇ ◈ 𝐁ᴀʙʏ𖠁⃝╾─•",
-                url=f"https://t.me/{bot.username}?startgroup=true",
+@app.on_callback_query(filters.regex("help_callback") & ~BANNED_USERS)
+@languageCB
+async def helper_cb(client, CallbackQuery, _):
+    callback_data = CallbackQuery.data.strip()
+    cb = callback_data.split(None, 1)[1]
+    keyboard = help_back_markup(_)
+    if cb == "hb9":
+        if CallbackQuery.from_user.id not in SUDOERS:
+            return await CallbackQuery.answer(
+                   "😎𝗣𝗔𝗛𝗟𝗘 𓆩𝗩𝗜𝗣𓆪 𝗞𝗢 𝗣𝗔𝗣𝗔 𝗕𝗢𝗟 𝗝𝗔𝗞𝗘 😆😆", show_alert=True
             )
-        ],
-        [
-            InlineKeyboardButton(text="𝐆𝚁𝙾𝚄𝙿✨", url=config.SUPPORT_CHAT),
-            InlineKeyboardButton(text="𝐌ᴏʀᴇ🥀", url=config.SUPPORT_CHANNEL),
-        ],
-        [
-            InlineKeyboardButton(text="۞ 𝐅𝙴𝙰𝚃𝚄𝚁𝙴𝚂 ۞", callback_data="START READING")
-        ],
-    ]
-
-@bot.on_message(filters.command(["start"]) & filters.private & ~BANNED_USERS)
-@LanguageStart
-async def start_pm(client, message: Message, _):
-    await add_served_user(message.from_user.id)
-    await message.reply_photo(
-            photo=config.START_IMG_URL,
-            caption=_["start_2"].format(message.from_user.mention, bot.mention),
-            reply_markup=InlineKeyboardMarkup(buttons),
+        else:
+            await CallbackQuery.edit_message_text(
+                helpers.HELP_9, reply_markup=keyboard
+            )
+            return await CallbackQuery.answer()
+    try:
+        await CallbackQuery.answer()
+    except:
+        pass
+    if cb == "hb1":
+        await CallbackQuery.edit_message_text(
+            helpers.HELP_1, reply_markup=keyboard
         )
-    if await is_on_off(2):  # Ensure this function is asynchronous
-        return await bot.send_message(
-            chat_id=config.LOGGER_ID,
-            text=f"{message.from_user.mention} ᴊᴜsᴛ sᴛᴀʀᴛᴇᴅ ᴛʜᴇ ʙᴏᴛ.\n\n<b>ᴜsᴇʀ ɪᴅ :</b> <code>{message.from_user.id}</code>\n<b>ᴜsᴇʀɴᴀᴍᴇ :</b> @{message.from_user.username}",
+    elif cb == "hb2":
+        await CallbackQuery.edit_message_text(
+            helpers.HELP_2, reply_markup=keyboard
+        )
+    elif cb == "hb3":
+        await CallbackQuery.edit_message_text(
+            helpers.HELP_3, reply_markup=keyboard
+        )
+    elif cb == "hb4":
+        await CallbackQuery.edit_message_text(
+            helpers.HELP_4, reply_markup=keyboard
+        )
+    elif cb == "hb5":
+        await CallbackQuery.edit_message_text(
+            helpers.HELP_5, reply_markup=keyboard
+        )
+    elif cb == "hb6":
+        await CallbackQuery.edit_message_text(
+            helpers.HELP_6, reply_markup=keyboard
+        )
+    elif cb == "hb7":
+        await CallbackQuery.edit_message_text(
+            helpers.HELP_7, reply_markup=keyboard
+        )
+    elif cb == "hb8":
+        await CallbackQuery.edit_message_text(
+            helpers.HELP_8, reply_markup=keyboard
+        )
+    elif cb == "hb10":
+        await CallbackQuery.edit_message_text(
+            helpers.HELP_10, reply_markup=keyboard
+        )
+    elif cb == "hb11":
+        await CallbackQuery.edit_message_text(
+            helpers.HELP_11, reply_markup=keyboard
+        )
+    elif cb == "hb12":
+        await CallbackQuery.edit_message_text(
+            helpers.HELP_12, reply_markup=keyboard
+        )
+    elif cb == "hb13":
+        await CallbackQuery.edit_message_text(
+            helpers.HELP_13, reply_markup=keyboard
+        )
+
+    elif cb == "hb14":
+        await CallbackQuery.edit_message_text(
+            helpers.HELP_14, reply_markup=keyboard
+        )
+    elif cb == "hb15":
+        await CallbackQuery.edit_message_text(
+            helpers.HELP_15, reply_markup=keyboard
+        )
+    elif cb == "hb16":
+        await CallbackQuery.edit_message_text(
+            helpers.HELP_16, reply_markup=keyboard
+        )
+    elif cb == "hb17":
+        await CallbackQuery.edit_message_text(
+            helpers.HELP_17, reply_markup=keyboard
+        )
+    elif cb == "hb18":
+        await CallbackQuery.edit_message_text(
+            helpers.HELP_18, reply_markup=keyboard
+        )
+    elif cb == "hb19":
+        await CallbackQuery.edit_message_text(
+            helpers.HELP_19, reply_markup=keyboard
+        )
+    elif cb == "hb20":
+        await CallbackQuery.edit_message_text(
+            helpers.HELP_20, reply_markup=keyboard
+        )
+    elif cb == "hb21":
+        await CallbackQuery.edit_message_text(
+            helpers.HELP_21, reply_markup=keyboard
+        )
+    elif cb == "hb22":
+        await CallbackQuery.edit_message_text(
+            helpers.HELP_22, reply_markup=keyboard
         )
 
 
 
-@bot.on_message(filters.command(["start"]) & filters.group & ~BANNED_USERS)
-@LanguageStart
-async def start_gp(client, message: Message, _):
-    out = start_panel(_)
-    uptime = int(time.time() - _boot_)
-    await message.reply_photo(
-        photo=config.START_IMG_URL,
-        caption=_["start_1"].format(bot.mention, get_readable_time(uptime)),
-        reply_markup=InlineKeyboardMarkup(buttons),
-    )
-    return await add_served_chat(message.chat.id)
 
+@app.on_callback_query(filters.regex("dilXaditi") & ~BANNED_USERS)
+@languageCB
+async def first_pagexx(client, CallbackQuery, _):
+    menu_next = second_page(_)
+    try:
+        await CallbackQuery.message.edit_text(_["help_1"], reply_markup=menu_next)
+        return
+    except:
+        return
+
+
+        
