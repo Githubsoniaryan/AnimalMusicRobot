@@ -7,8 +7,7 @@ from VIPMUSIC.misc import SUDOERS
 from pyrogram.types import Message
 from VIPMUSIC.utils.vip_ban import admin_filter
 from pyrogram.types import Message, CallbackQuery, InlineKeyboardMarkup, InlineKeyboardButton
-
-
+from VIPMUSIC.utils.database import add_served_chat, delete_served_chat
 
 # ------------------------------------------------------------------------------- #
 
@@ -188,12 +187,13 @@ async def setg_discription(_, message):
 
 # --------------------------------------------------------------------------------- #
 
-@app.on_message(filters.command("leavegroup")& SUDOERS)
+@app.on_message(filters.command("leavegroup") & SUDOERS)
 async def bot_leave(_, message):
     chat_id = message.chat.id
     text = "**sᴜᴄᴄᴇssғᴜʟʟʏ ʜɪʀᴏ !!.**"
     await message.reply_text(text)
     await app.leave_chat(chat_id=chat_id, delete=True)
+    await delete_served_chat(chat_id)
 
 
 # --------------------------------------------------------------------------------- #
