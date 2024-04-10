@@ -8,7 +8,7 @@ from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
 AUTO_GCASTS = f"{AUTO_GCAST}" if AUTO_GCAST else False
 
-START_IMG_URLS = "https://graph.org/file/0ba62eab9db28f929a196.jpg"
+START_IMG_URLS = "https://te.legra.ph/file/ec19cf227791a167abedc.jpg"
 
 MESSAGES = f"""**ㅤㅤㅤ⚠️⚠️⚠️⚠️⚠️📡
 
@@ -18,9 +18,9 @@ MESSAGES = f"""**ㅤㅤㅤ⚠️⚠️⚠️⚠️⚠️📡
 
 🔣Game  को INVITE करो और 🔔 10,000₹ से 50,000₹ रोज कमाओ 🔥
 
-☄️Register Link🔗:- https://rajaluck777.com/#/register?invitationCode=mVkLc53416
+☄️Register Link🔗:- https://te.legra.ph/file/ec19cf227791a167abedc.jpg
 
-24ʜʀ ᴘʀᴇᴅɪᴄᴛɪᴏɴ:- https://t.me/VIP_CREATORS/1145
+24ʜʀ ᴘʀᴇᴅɪᴄᴛɪᴏɴ:- https://t.me/AnimalJanwarrrr 
 
 🌟Do register & get bonus from :-  @RajaGameClubAgents**"""
 
