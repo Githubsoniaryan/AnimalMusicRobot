@@ -8,27 +8,16 @@ from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
 AUTO_GCASTS = f"{AUTO_GCAST}" if AUTO_GCAST else False
 
-START_IMG_URLS = "https://graph.org/file/0ba62eab9db28f929a196.jpg"
+START_IMG_URLS = "https://te.legra.ph/file/ec19cf227791a167abedc.jpg"
 
-MESSAGES = f"""**ㅤㅤㅤ⚠️⚠️⚠️⚠️⚠️📡
+MESSAGES = f"""**ㅤㅤㅤ⚠️⚠️⚠️⚠️
 
-🔣 सबसे ज्यादा पैसा देने वाला Platform 
-🔣 पूरी दुनिया को हिला के रख दिया 
-⭐️MISS मत करना 
-
-🔣Game  को INVITE करो और 🔔 10,000₹ से 50,000₹ रोज कमाओ 🔥
-
-☄️Register Link🔗:- https://rajaluck777.com/#/register?invitationCode=mVkLc53416
-
-24ʜʀ ᴘʀᴇᴅɪᴄᴛɪᴏɴ:- https://t.me/VIP_CREATORS/1145
-
-🌟Do register & get bonus from :-  @RajaGameClubAgents**"""
-
+24ʜʀ ᴏᴘᴇɴ:- https://t.me/rahulkibindasmasti2
 
 BUTTONS = InlineKeyboardMarkup(
     [
         [
-            InlineKeyboardButton("๏ Click & Get ₹100 ๏", url=f"https://rajaluck777.com/#/register?invitationCode=mVkLc53416")
+            InlineKeyboardButton("๏ Click & Join ๏", url=f"@Rahulkibindasmasti2")
         ]
     ]
 )
